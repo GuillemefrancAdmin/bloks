@@ -6,7 +6,7 @@
 import { existsSync, mkdirSync, readFileSync, rmSync, unlinkSync, watch, writeFileSync, renameSync } from "node:fs";
 import { createHash, randomBytes } from "node:crypto";
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
-import { homedir } from "node:os";
+import { homedir, hostname } from "node:os";
 import { fileURLToPath } from "node:url";
 import { extname, join, resolve, sep } from "node:path";
 
@@ -7485,9 +7485,20 @@ const server = createServer(async (req, res) => {
 
     // How the desktop shell recognises the server it just started. A
     // developer's own harness answers this route identically, so the pid
-    // is the part that distinguishes ours from theirs.
+    // is the part that distinguishes ours from theirs. The rest is for the
+    // Connection page in settings, which says which server the app is on.
     if (method === "GET" && path === "/api/health") {
-      return json(res, 200, { app: "bloks", pid: process.pid, static: Boolean(STATIC_DIR) });
+      return json(res, 200, {
+        app: "bloks",
+        pid: process.pid,
+        static: Boolean(STATIC_DIR),
+        version: APP_VERSION,
+        host: hostname(),
+        port: PORT,
+        bind: BIND,
+        dataDir: DATA_DIR,
+        uptime: Math.round(process.uptime()),
+      });
     }
 
     // ── provider instances (model picker) ──

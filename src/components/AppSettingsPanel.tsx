@@ -25,6 +25,7 @@ import { DevicesSection } from "./DevicesSection";
 import { TelegramSection } from "./TelegramSection";
 import { ChatSection } from "./ChatSection";
 import { RemoteSection } from "./RemoteSection";
+import { ConnectionSection } from "./ConnectionSection";
 import { LocalVmSection } from "./LocalVmSection";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -44,6 +45,7 @@ import History from "lucide-react/dist/esm/icons/history.mjs";
 import Info from "lucide-react/dist/esm/icons/info.mjs";
 import LayoutGrid from "lucide-react/dist/esm/icons/layout-grid.mjs";
 import MessageCircle from "lucide-react/dist/esm/icons/message-circle.mjs";
+import Plug from "lucide-react/dist/esm/icons/plug.mjs";
 import Mic from "lucide-react/dist/esm/icons/mic.mjs";
 import SearchIcon from "lucide-react/dist/esm/icons/search.mjs";
 import ShieldCheck from "lucide-react/dist/esm/icons/shield-check.mjs";
@@ -531,6 +533,13 @@ export const SETTINGS_PAGES: Array<{ group: string; pages: SettingsPage[] }> = [
     group: "Connections",
     pages: [
       {
+        id: "connection",
+        label: "Connection",
+        icon: Plug,
+        description: "Which Bloks server this app is talking to, and where it runs.",
+        keywords: "server connected address host port url localhost remote proxy status health data folder",
+      },
+      {
         id: "apps",
         label: "Apps and keys",
         icon: LayoutGrid,
@@ -755,6 +764,8 @@ function PageBody({ id }: { id: string }) {
           <UseFromOtherApps />
         </>
       );
+    case "connection":
+      return <ConnectionSection />;
     case "devices":
       return (
         <>
